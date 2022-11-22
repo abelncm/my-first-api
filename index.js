@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const { response } = require('express')
+const { restart } = require('nodemon')
 
 const app = express()
 const port = 3000
@@ -38,7 +38,7 @@ function generateId() {
 
 app.get('/persons/:id', (req, res) => {
     const searchId = req.params.id;
-    
+
     for (let person of listOfPersons) {
         if (person.id == searchId) {
             res.send(person);
@@ -47,7 +47,7 @@ app.get('/persons/:id', (req, res) => {
     }
 
     res.status(404);
-    res.send({message: `Person with id ${searchId} not found!`});
+    res.send({ message: `Person with id ${searchId} not found!` });
 })
 
 app.get('/persons', (req, res) => {
@@ -85,8 +85,8 @@ app.put('/persons/:id', (req, res) => {
     const searchId = req.params.id;
     const dataToUpdate = req.body;
 
-    for (let person of listOfPersons){
-        if(searchId == person.id){
+    for (let person of listOfPersons) {
+        if (searchId == person.id) {
             person.name = dataToUpdate.name;
             person.phone = dataToUpdate.phone;
             res.send(person);
@@ -95,8 +95,8 @@ app.put('/persons/:id', (req, res) => {
     }
 
     res.status(404);
-    res.send({message: `Person with id ${searchId} not found!`});
-   
+    res.send({ message: `Person with id ${searchId} not found!` });
+
 })
 
 
@@ -104,12 +104,12 @@ app.put('/persons/:id', (req, res) => {
 app.delete('/persons/:id', (req, res) => {
 
     const searchId = req.params.id;
- 
-    for (let pos in listOfPersons){
-        
+
+    for (let pos in listOfPersons) {
+
         const personId = listOfPersons[pos].id;
 
-        if(personId == searchId){
+        if (personId == searchId) {
             listOfPersons.splice(pos, 1);
             res.status(204);
             res.send();
@@ -118,12 +118,29 @@ app.delete('/persons/:id', (req, res) => {
     }
 
     res.status(404);
-    res.send({message: `Person with id ${searchId} not found!`});
-   
-   
+    res.send({ message: `Person with id ${searchId} not found!` });
+
 })
 
+app.get('/calculate', (req, res) => {
 
+    const number1 = parseInt(req.query.a);
+    const number2 = parseInt(req.query.b);
+    let op = req.query.op;
+
+    let result = 0;
+
+    if (op == 'SUM')
+        result = number1 + number2;
+    else if (op == 'SUBT')
+        result = number1 - number2;
+    else if (op == 'MULT')
+        result = number1 * number2;
+    else if (op == 'DIV')
+        result = number1 / number2;
+    
+    res.send(result.toString());
+})
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
