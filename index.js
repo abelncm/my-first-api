@@ -12,7 +12,7 @@ app.use(cors())
 let listOfPersons = [
     {
         id: 11,
-        name: "Joana",
+        name: "Game of Thrones",
         phone: 5802943
     },
     {
@@ -78,7 +78,7 @@ app.post('/persons', (req, res) => {
     listOfPersons.push(newPerson);
 
     res.status(201);
-    res.send(listOfPersons);
+    res.send(newPerson);
 })
 
 app.put('/persons/:id', (req, res) => {
